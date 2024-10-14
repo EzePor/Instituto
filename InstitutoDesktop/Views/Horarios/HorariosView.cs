@@ -102,6 +102,7 @@ namespace InstitutoDesktop.Views
             bindingHorarios.DataSource = listaHorarios.Where(h => h.CicloLectivoId.Equals((int)cboCiclosLectivos.SelectedValue) &&
                                                             h.Materia.AnioCarrera.CarreraId.Equals((int)cboCarreras.SelectedValue) &&
                                                             h.Materia.AnioCarreraId.Equals((int)cboAniosCarreras.SelectedValue));
+            dataGridHorarios.OcultarColumnas(new string[] { "Id", "CicloLectivo", "DetallesHorario", "IntegrantesHorario", "CicloLectivoId", "Eliminado" });
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -112,7 +113,7 @@ namespace InstitutoDesktop.Views
 
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (horarioCurrent?.IntegrantesHorario?.Count == 0)
+            if (horarioCurrent?.IntegrantesHorario?.Count == 0 && !horarioCurrent.DetallesHorario.Any(dh=>dh.Hora.EsRecreo.Equals(true)))
             {
                 MessageBox.Show("Debe definirse al menos un docente para el horario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -186,6 +187,7 @@ namespace InstitutoDesktop.Views
                 await CargarGrilla();
             }
             horarioCurrent = null;
+            actualizarListaHorarios();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

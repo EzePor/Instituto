@@ -1,6 +1,8 @@
 ﻿@using InstitutoServices.Models.Login
 @inject FirebaseAuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IUsuarioService usuarioService
+@inject IInscriptoCarreraService inscriptoCarreraService
 @inject ILogger<NavMenu> logger
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -65,11 +67,23 @@
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Mesas de exámenes
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="horarios">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Horarios
-            </NavLink>
-        </div>
+        @if(usuario?.TipoUsuario==TipoUsuarioEnum.Alumno)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Horarios
+                </NavLink>
+            </div>
+        
+        }
+        else
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="horarios?idCicloLectivo=1&idCarrera=@inscripcionesACarreras[0].idCarrera">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Horarios
+                </NavLink>
+            </div>
+        }
         <div class="nav-item px-3">
             @if (userFirebaseAuthenticate != null)
             {
@@ -97,6 +111,9 @@
 </div>
 
 @code {
+
+    Usuario? usuario { get; set; }
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -113,6 +130,16 @@
     protected async override Task OnInitializedAsync()
     {
         userFirebaseAuthenticate = await AuthService.GetUserAuthenticated();
+        usuario = await usuarioService.GetUserByEmail(userFirebaseAuthenticate?.Email);
+        //logger.LogInformation($"usuario={usuario?.PropertiesToString()}");
+
+        if(usuario.TipoUsuario==TipoUsuarioEnum.Alumno)
+        {
+            inscripcionesACarreras = await inscriptoCarreraService.GetByAlumno(usuario.AlumnoId);
+        })
+
+
+
         AuthService.OnChangeLogin += ChequeoEstadoLogin;
     }
 
