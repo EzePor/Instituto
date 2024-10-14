@@ -124,6 +124,6 @@
     <value>true</value>
   </data>
   <data name="UrlApiRemoto" xml:space="preserve">
-    <value>https://datainstituto.azurewebsites.net/api/</value>
+    <value>https://datainstitutoeze.azurewebsites.net/api/</value>
   </data>
 </root>

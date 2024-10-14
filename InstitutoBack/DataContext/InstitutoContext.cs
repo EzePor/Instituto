@@ -490,6 +490,8 @@ namespace InstitutoBack.DataContext
             modelBuilder.Entity<Horario>().HasQueryFilter(m => !m.Eliminado);
             modelBuilder.Entity<IntegranteHorario>().HasQueryFilter(m => !m.Eliminado);
             modelBuilder.Entity<JefaturaSeccion>().HasQueryFilter(m => !m.Eliminado);
+            modelBuilder.Entity<InscripcionExamen>().HasQueryFilter(m => !m.Eliminado);
+            modelBuilder.Entity<DetalleInscripcionExamen>().HasQueryFilter(m => !m.Eliminado);
             #endregion
 
             #region datos semillas turnosExamenes
@@ -1049,6 +1051,10 @@ namespace InstitutoBack.DataContext
         public virtual DbSet<InscriptoCarrera> inscriptoscarreras { get; set; }
         public virtual DbSet<Usuario> usuarios { get; set; }
         public virtual DbSet<JefaturaSeccion> jefaturassecciones { get; set; }
+
+        public virtual DbSet<InscripcionExamen> inscripcionesexamenes { get; set; }
+
+        public virtual DbSet<DetalleInscripcionExamen> detallesinscripcionesexamenes { get; set; }
 
 
     }

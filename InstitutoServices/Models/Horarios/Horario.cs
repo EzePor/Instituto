@@ -1,5 +1,6 @@
 ﻿using InstitutoServices.Models.Commons;
 using InstitutoServices.Models.Inscripciones;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InstitutoServices.Models.Horarios
 {
@@ -13,6 +14,12 @@ namespace InstitutoServices.Models.Horarios
         public CicloLectivo? CicloLectivo { get; set; }
         public bool Eliminado { get; set; } = false;
 
+        [NotMapped]
+        public string Docentes {
+            get{
+                return string.Join(", ", IntegrantesHorario.Select(x => x.Docente?.Nombre));
+                }
+            } 
 
         public ICollection<DetalleHorario>? DetallesHorario { get; set; }
 

@@ -3244,8 +3244,34 @@ namespace InstitutoBack.Migrations
                             CarreraId = 1,
                             CicloLectivoId = 1,
                             Eliminado = false,
-                            Fecha = new DateTime(2024, 10, 13, 11, 56, 51, 520, DateTimeKind.Local).AddTicks(368)
+                            Fecha = new DateTime(2024, 10, 17, 14, 27, 33, 177, DateTimeKind.Local).AddTicks(178)
                         });
+                });
+
+            modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.DetalleInscripcionExamen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Eliminado")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("InscripcionExamenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MateriaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InscripcionExamenId");
+
+                    b.HasIndex("MateriaId");
+
+                    b.ToTable("detallesinscripcionesexamenes");
                 });
 
             modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.DetalleMesaExamen", b =>
@@ -7695,6 +7721,40 @@ namespace InstitutoBack.Migrations
                         });
                 });
 
+            modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.InscripcionExamen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlumnoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarreraId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Eliminado")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("TurnoExamenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlumnoId");
+
+                    b.HasIndex("CarreraId");
+
+                    b.HasIndex("TurnoExamenId");
+
+                    b.ToTable("inscripcionesexamenes");
+                });
+
             modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.MesaExamen", b =>
                 {
                     b.Property<int>("Id")
@@ -9299,6 +9359,25 @@ namespace InstitutoBack.Migrations
                     b.Navigation("CicloLectivo");
                 });
 
+            modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.DetalleInscripcionExamen", b =>
+                {
+                    b.HasOne("InstitutoServices.Models.MesasExamenes.InscripcionExamen", "InscripcionExamen")
+                        .WithMany()
+                        .HasForeignKey("InscripcionExamenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InstitutoServices.Models.Commons.Materia", "Materia")
+                        .WithMany()
+                        .HasForeignKey("MateriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InscripcionExamen");
+
+                    b.Navigation("Materia");
+                });
+
             modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.DetalleMesaExamen", b =>
                 {
                     b.HasOne("InstitutoServices.Models.Commons.Docente", "Docente")
@@ -9316,6 +9395,33 @@ namespace InstitutoBack.Migrations
                     b.Navigation("Docente");
 
                     b.Navigation("MesaExamen");
+                });
+
+            modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.InscripcionExamen", b =>
+                {
+                    b.HasOne("InstitutoServices.Models.Commons.Alumno", "Alumno")
+                        .WithMany()
+                        .HasForeignKey("AlumnoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InstitutoServices.Models.Commons.Carrera", "Carrera")
+                        .WithMany()
+                        .HasForeignKey("CarreraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InstitutoServices.Models.MesasExamenes.TurnoExamen", "TurnoExamen")
+                        .WithMany()
+                        .HasForeignKey("TurnoExamenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Alumno");
+
+                    b.Navigation("Carrera");
+
+                    b.Navigation("TurnoExamen");
                 });
 
             modelBuilder.Entity("InstitutoServices.Models.MesasExamenes.MesaExamen", b =>
