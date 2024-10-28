@@ -45,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Inscripciones\" />
 
     <Folder Include="Views\MesasExamenes\" />
 
