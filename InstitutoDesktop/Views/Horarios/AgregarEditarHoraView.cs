@@ -38,7 +38,7 @@ namespace InstitutoDesktop.Views.Horarios
             //definimos el valor de la fecha como actual y la hora y minutos como los de la hora
             dateTimeDesde.Value = new DateTime(1800, 1, 1, hora.Desde.Hour, hora.Desde.Minute, 0);
             dateTimeHasta.Value = new DateTime(1800, 1, 1, hora.Hasta.Hour, hora.Hasta.Minute, 0);
-            chkRecreo.Checked = hora.EsRecreo;
+            
         }
 
         private async void btnGuardar_Click(object sender, EventArgs e)
@@ -65,7 +65,7 @@ namespace InstitutoDesktop.Views.Horarios
             hora.Hasta = new DateTime(1, 1, 1, dateTimeHasta.Value.Hour, dateTimeHasta.Value.Minute, 0);
 
 
-            hora.EsRecreo = chkRecreo.Checked;
+      
             txtNombre.Text = hora.Nombre;
         }
 

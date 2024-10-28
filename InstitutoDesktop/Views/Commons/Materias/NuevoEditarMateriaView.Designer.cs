@@ -34,6 +34,7 @@
             btnGuardar = new Button();
             txtAnioYCarrera = new TextBox();
             label3 = new Label();
+            chkEsRecreo = new CheckBox();
             SuspendLayout();
             // 
             // txtMateria
@@ -104,12 +105,24 @@
             label3.TabIndex = 19;
             label3.Text = "Año y Carrera:";
             // 
+            // chkEsRecreo
+            // 
+            chkEsRecreo.AutoSize = true;
+            chkEsRecreo.Font = new Font("Bahnschrift SemiCondensed", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            chkEsRecreo.Location = new Point(136, 307);
+            chkEsRecreo.Name = "chkEsRecreo";
+            chkEsRecreo.Size = new Size(145, 38);
+            chkEsRecreo.TabIndex = 21;
+            chkEsRecreo.Text = "Es Recreo";
+            chkEsRecreo.UseVisualStyleBackColor = true;
+            // 
             // NuevoEditarMateriaView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Silver;
             ClientSize = new Size(800, 450);
+            Controls.Add(chkEsRecreo);
             Controls.Add(txtAnioYCarrera);
             Controls.Add(label3);
             Controls.Add(txtMateria);
@@ -131,5 +144,6 @@
         private Button btnGuardar;
         private TextBox txtAnioYCarrera;
         private Label label3;
+        private CheckBox chkEsRecreo;
     }
 }

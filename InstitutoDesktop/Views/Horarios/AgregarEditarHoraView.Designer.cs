@@ -32,7 +32,6 @@
             label1 = new Label();
             btnCancelar = new FontAwesome.Sharp.IconButton();
             btnGuardar = new FontAwesome.Sharp.IconButton();
-            chkRecreo = new CheckBox();
             dateTimeDesde = new DateTimePicker();
             dateTimeHasta = new DateTimePicker();
             label2 = new Label();
@@ -92,22 +91,11 @@
             btnGuardar.UseVisualStyleBackColor = true;
             btnGuardar.Click += btnGuardar_Click;
             // 
-            // chkRecreo
-            // 
-            chkRecreo.AutoSize = true;
-            chkRecreo.Location = new Point(222, 247);
-            chkRecreo.Name = "chkRecreo";
-            chkRecreo.Size = new Size(77, 24);
-            chkRecreo.TabIndex = 14;
-            chkRecreo.Text = "Recreo";
-            chkRecreo.UseVisualStyleBackColor = true;
-            chkRecreo.CheckedChanged += chkRecreo_CheckedChanged;
-            // 
             // dateTimeDesde
             // 
             dateTimeDesde.Format = DateTimePickerFormat.Time;
             dateTimeDesde.Location = new Point(308, 64);
-            dateTimeDesde.Margin = new Padding(2, 2, 2, 2);
+            dateTimeDesde.Margin = new Padding(2);
             dateTimeDesde.Name = "dateTimeDesde";
             dateTimeDesde.ShowUpDown = true;
             dateTimeDesde.Size = new Size(125, 27);
@@ -118,7 +106,7 @@
             // 
             dateTimeHasta.Format = DateTimePickerFormat.Time;
             dateTimeHasta.Location = new Point(308, 116);
-            dateTimeHasta.Margin = new Padding(2, 2, 2, 2);
+            dateTimeHasta.Margin = new Padding(2);
             dateTimeHasta.Name = "dateTimeHasta";
             dateTimeHasta.ShowUpDown = true;
             dateTimeHasta.Size = new Size(125, 27);
@@ -156,7 +144,6 @@
             Controls.Add(label2);
             Controls.Add(dateTimeHasta);
             Controls.Add(dateTimeDesde);
-            Controls.Add(chkRecreo);
             Controls.Add(txtNombre);
             Controls.Add(label1);
             Controls.Add(btnCancelar);
@@ -173,7 +160,6 @@
         private Label label1;
         private FontAwesome.Sharp.IconButton btnCancelar;
         private FontAwesome.Sharp.IconButton btnGuardar;
-        private CheckBox chkRecreo;
         private DateTimePicker dateTimeDesde;
         private DateTimePicker dateTimeHasta;
         private Label label2;

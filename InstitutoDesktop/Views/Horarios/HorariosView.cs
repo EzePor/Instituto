@@ -141,12 +141,12 @@ namespace InstitutoDesktop.Views
 
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            if(cboMaterias.SelectedValue == null )
+            if (cboMaterias.SelectedValue == null)
             {
                 MessageBox.Show("Debe seleccionar una materia", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (horarioCurrent?.IntegrantesHorario?.Count == 0 && !horarioCurrent.DetallesHorario.Any(dh => dh.Hora.EsRecreo.Equals(true)))
+            if (horarioCurrent?.IntegrantesHorario?.Count == 0 && !horarioCurrent.Materia.EsRecreo)
             {
                 MessageBox.Show("Debe definirse al menos un docente para el horario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -161,7 +161,8 @@ namespace InstitutoDesktop.Views
             {
                 horarioCurrent.MateriaId = (int)cboMaterias.SelectedValue;
                 horarioCurrent.CicloLectivoId = (int)cboCiclosLectivos.SelectedValue;
-                horarioCurrent.CantidadHoras = horarioCurrent.DetallesHorario.Count(h => h.Hora.EsRecreo.Equals(false));
+                horarioCurrent.CantidadHoras = horarioCurrent.DetallesHorario.Count;
+
                 horarioCurrent.Materia = null;
                 horarioCurrent.CicloLectivo = null;
                 horarioCurrent.IntegrantesHorario.ToList().ForEach(i => i.Docente = null);
@@ -208,9 +209,9 @@ namespace InstitutoDesktop.Views
             cboMaterias.SelectedValue = horarioCurrent?.MateriaId ?? 0;
             dataGridDocentes.DataSource = horarioCurrent?.IntegrantesHorario ?? null;
             dataGridDocentes.OcultarColumnas(new string[] { "Horario", "HorarioId", "Id", "Eliminado" });
-            dataGridHoras.DataSource = horarioCurrent?.DetallesHorario.OrderBy(d=>d.Dia).ThenBy(d=>d.Hora.Desde).ToList() ?? null;
+            dataGridHoras.DataSource = horarioCurrent?.DetallesHorario.OrderBy(d => d.Dia).ThenBy(d => d.Hora.Desde).ToList() ?? null;
             cboAulas.SelectedValue = horarioCurrent?.DetallesHorario.FirstOrDefault()?.AulaId ?? 0;
-            dataGridHoras.OcultarColumnas(new string[] { "AulaId","Horario", "HoraId", "HorarioId", "Id", "Eliminado" });
+            dataGridHoras.OcultarColumnas(new string[] { "AulaId", "Horario", "HoraId", "HorarioId", "Id", "Eliminado" });
         }
 
         private async void btnEliminar_Click(object sender, EventArgs e)
@@ -280,12 +281,33 @@ namespace InstitutoDesktop.Views
                 return;
             }
             var aula = (Aula)cboAulas.SelectedItem;
-            horarioCurrent.DetallesHorario.Add(new DetalleHorario { HoraId = hora.Id, Hora = hora, Dia = (DiaEnum)cboDias.SelectedValue, HorarioId = horarioCurrent.Id, AulaId=aula.Id, Aula=aula });
+            if(DetalleHorarioEdit != null)
+            {
+                DetalleHorarioEdit.HoraId = hora.Id;
+                DetalleHorarioEdit.Hora = hora;
+                DetalleHorarioEdit.Dia = (DiaEnum)cboDias.SelectedValue;
+                DetalleHorarioEdit.AulaId = aula.Id;
+                DetalleHorarioEdit.Aula = aula;
+                DetalleHorarioEdit.HorarioId = horarioCurrent.Id;
+                DetalleHorarioEdit.Horario = horarioCurrent;
+                DetalleHorarioEdit.Id = 0;
+                DetalleHorarioEdit = null;
+                btnAgregar.Text = "Agregar";
+                var detalleABorrar = (DetalleHorario)dataGridHoras.CurrentRow.DataBoundItem;
+                horarioCurrent.DetallesHorario.Remove(detalleABorrar);  
+                horarioCurrent.DetallesHorario.Add(DetalleHorarioEdit);
+            }
+            else
+            {
+                horarioCurrent.DetallesHorario.Add(new DetalleHorario { HoraId = hora.Id, Hora = hora, Dia = (DiaEnum)cboDias.SelectedValue, HorarioId = horarioCurrent.Id, AulaId = aula.Id, Aula = aula });
+            }
+
+            horarioCurrent.DetallesHorario.Add(new DetalleHorario { HoraId = hora.Id, Hora = hora, Dia = (DiaEnum)cboDias.SelectedValue, HorarioId = horarioCurrent.Id, AulaId = aula.Id, Aula = aula });
             dataGridHoras.DataSource = null;
-            dataGridHoras.DataSource = horarioCurrent.DetallesHorario.OrderBy(d=>d.Dia).ThenBy(d=>d.Hora.Desde).ToList();
-            dataGridHoras.OcultarColumnas(new string[] { "AulaId","Horario", "HoraId", "HorarioId", "Id", "Eliminado" });
-            
-            
+            dataGridHoras.DataSource = horarioCurrent.DetallesHorario.OrderBy(d => d.Dia).ThenBy(d => d.Hora.Desde).ToList();
+            dataGridHoras.OcultarColumnas(new string[] { "AulaId", "Horario", "HoraId", "HorarioId", "Id", "Eliminado" });
+
+
 
         }
 
@@ -331,6 +353,16 @@ namespace InstitutoDesktop.Views
         private void iconButtonSalir_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (dataGridHoras.CurrentRow == null)
+            {
+                MessageBox.Show("Debe seleccionar una hora para quitar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            var detalleHorario = (DetalleHorario)dataGridHoras.CurrentRow.DataBoundItem;
         }
     }
 }
